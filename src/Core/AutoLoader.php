@@ -9,6 +9,16 @@ class AutoLoader
   public function __construct(private string $namespace, private string $initialPath)
   {
     $this->initialPath = $this->normalizeSlashesForDirectorySeparator($this->initialPath);
+
+    if (str_starts_with($this->initialPath, VVERNER_TOOLBOX)) :
+      $this->loadAdapters();
+    endif;
+  }
+
+  private function loadAdapters(): void
+  {
+    $path = VVERNER_TOOLBOX . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'Adapter';
+    $this->load($path);
   }
 
   public function load(string $path = null): void
@@ -25,7 +35,7 @@ class AutoLoader
     endif;
 
     $ignoredFiles = ['index.php', '..', '.'];
-    $dependencies = array_diff(scandir($path, SORT_STRING), $ignoredFiles);
+    $dependencies = array_diff(scandir($path), $ignoredFiles);
 
     $files = array_filter($dependencies, fn ($dependency): bool => is_file($path . DIRECTORY_SEPARATOR . $dependency));
     $dependencies = array_diff($dependencies, $files);
@@ -41,7 +51,7 @@ class AutoLoader
 
   private function loadFile(string $path): void
   {
-    if (str_ends_with($path, '.php')) :
+    if (str_ends_with($path, '.php') && !str_ends_with($path, 'AutoLoader.php')) :
       require_once $path;
       $this->attachClass($path);
     endif;
@@ -49,10 +59,6 @@ class AutoLoader
 
   private function attachClass(string $path): void
   {
-    if (str_ends_with($path, 'AutoLoader.php')) :
-      return;
-    endif;
-
     $className = $this->getDirectoryNamespace($path);
 
     if (!class_exists($className) || !method_exists($className, 'attach') || str_contains($className, '\Adapter\\')) {
