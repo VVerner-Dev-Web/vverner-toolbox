@@ -1,10 +1,10 @@
 <?php
 
-namespace VVerner\Flatsome;
+namespace VVerner\Core;
 
 defined('ABSPATH') || exit;
 
-class Updates
+class Flatsome
 {
   private string $cacheKey = 'vverner/flatsome/theme-update';
 

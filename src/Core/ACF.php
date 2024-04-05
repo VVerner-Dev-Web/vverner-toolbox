@@ -4,11 +4,14 @@ namespace VVerner\ACF;
 
 defined('ABSPATH') || exit;
 
-class Updates
+class ACF
 {
+  private string $jsonPath = WP_CONTENT_DIR . DIRECTORY_SEPARATOR . 'acf-json';
+
   private string $cacheKey = 'vverner/acf/plugin-update';
   private string $slug = WP_PLUGIN_DIR . '/advanced-custom-fields-pro/acf.php';
   private string $version;
+
 
   private function __construct()
   {
@@ -19,9 +22,32 @@ class Updates
     $cls = new self();
 
     $cls->load();
+    $cls->createJsonDir();
 
     add_filter('site_transient_update_plugins', $cls->update(...));
     add_action('upgrader_process_complete', $cls->purge(...), 10, 2);
+
+    add_filter('acf/settings/save_json', $cls->saveJson(...));
+    add_filter('acf/settings/load_json', $cls->loadPath(...));
+  }
+
+  private function saveJson(): string
+  {
+    return $this->jsonPath;
+  }
+
+  private function loadPath(array $paths): array
+  {
+    $paths[] = $this->jsonPath;
+    return $paths;
+  }
+
+  private function createJsonDir(): void
+  {
+    if (!is_dir($this->jsonPath)) :
+      mkdir($this->jsonPath);
+      file_put_contents($this->jsonPath . DIRECTORY_SEPARATOR . 'index.php', '');
+    endif;
   }
 
   private function update($transient)
