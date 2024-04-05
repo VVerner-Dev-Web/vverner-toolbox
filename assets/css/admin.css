@@ -1,0 +1,106 @@
+.vverner-page #vverner-logo img {
+  width: 250px;
+  height: auto;
+}
+
+.vverner-page .navigator {
+  margin: 0;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1em;
+}
+
+.vverner-page .tab a {
+  background: #f7f7f8;
+  padding: 1em;
+  border-radius: 10px 10px 0 0;
+  margin: 0;
+  display: block;
+}
+
+.vverner-page .tab a.active {
+  background: #fff;
+  font-weight: bold;
+}
+
+.vverner-page .tab a {
+  text-decoration: none;
+  color: #363636;
+}
+
+.vverner-page .tab {
+  margin: 0;
+}
+
+.vverner-page .tabs-container {
+  background: #fff;
+  padding: 1em;
+  border-radius: 0 10px 10px 10px;
+}
+
+.vverner-page * {
+  box-sizing: border-box;
+}
+
+.vverner-page .tab-content:not(.active) {
+  display: none;
+}
+
+.vverner-page .vverner-configuration-form:not(:first-child) {
+  margin-top: 30px;
+  border-top: solid 2px #d5d5d5;
+  padding-top: 30px;
+}
+
+.vverner-page .input-container {
+  margin-bottom: 10px;
+}
+
+.vverner-page .input-container label {
+  display: block;
+  font-weight: 600;
+  font-size: 90%;
+  margin-bottom: 3px;
+}
+
+.vverner-page .input-container input,
+.vverner-page .input-container select {
+  display: block;
+  width: 100%;
+  max-width: unset;
+  line-height: 1;
+  padding: 0.5em 0.75em;
+}
+
+.vverner-page h3:first-of-type {
+  margin-top: 0;
+}
+
+.vverner-page .vverner-configuration-form button {
+  background: #6c2bd0;
+  color: #fff;
+  border: unset;
+  border-radius: 3px;
+  line-height: 1;
+  display: inline-block;
+  padding: 1em 3em;
+  font-size: 1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 300ms;
+}
+
+.vverner-page .vverner-configuration-form button:hover {
+  background: #640de9;
+}
+
+.vverner-page table th {
+  text-align: left;
+}
+
+#toplevel_page_vverner-main img {
+  padding-top: 7px !important;
+  -webkit-filter: invert(1) brightness(3);
+  filter: invert(1) brightness(3);
+}
