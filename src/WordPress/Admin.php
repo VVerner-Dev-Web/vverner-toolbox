@@ -2,7 +2,7 @@
 
 namespace VVerner\WordPress;
 
-class AdminPages
+class Admin
 {
   private function __construct()
   {
@@ -14,6 +14,14 @@ class AdminPages
 
     add_action('admin_menu', $cls->addPages(...));
     add_action('admin_enqueue_scripts', $cls->enqueueScripts(...));
+
+    add_filter('admin_footer_text', $cls->footerText(...));
+  }
+
+  private function footerText(): string
+  {
+    global $VVerner;
+    return 'A <a href="' . $VVerner['support']['site'] . '" target="_blank" rel="noopener">VVerner</a> orgulhosamente trabalhou neste projeto <a href="https://wordpress.org/" target="_blank" rel="noopener">WordPress</a>.';
   }
 
   private function addPages(): void
