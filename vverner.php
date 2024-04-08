@@ -12,7 +12,9 @@ $VVerner = [
     'email'     => 'comercial@vverner.com',
     'whatsapp'  => '(54) 9 8449-6064',
     'site'      => 'https://vverner.com'
-  ]
+  ],
+  'autoloader'  => [],
+  'vjax'        => [],
 ];
 
 require_once VVERNER_TOOLBOX . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'Core' . DIRECTORY_SEPARATOR . 'AutoLoader.php';

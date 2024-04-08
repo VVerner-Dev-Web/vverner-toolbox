@@ -8,11 +8,15 @@ class AutoLoader
 {
   public function __construct(private string $namespace, private string $initialPath)
   {
+    global $VVerner;
+
     $this->initialPath = $this->normalizeSlashesForDirectorySeparator($this->initialPath);
 
     if (str_starts_with($this->initialPath, VVERNER_TOOLBOX)) :
       $this->loadAdapters();
     endif;
+
+    $VVerner['autoloader'][$this->namespace] = $this->initialPath;
   }
 
   private function loadAdapters(): void

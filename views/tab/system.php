@@ -76,6 +76,28 @@ $parentTheme = $theme->parent();
 <?php if (isVVernerUser()) : ?>
 
   <br>
+  <h3>Autoloaders</h3>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Namespace</th>
+        <th>Source</th>
+      </tr>
+    </thead>
+    <tbody>
+      <?php foreach ($VVerner['autoloader'] as $namespace => $source) : ?>
+        <tr>
+          <td>
+            <strong><?= $namespace ?></strong>
+          </td>
+          <td><?= $source ?></td>
+        </tr>
+      <?php endforeach; ?>
+    </tbody>
+  </table>
+
+  <br>
   <h3>VJAX - Endpoints</h3>
 
   <table>
