@@ -17,7 +17,10 @@ class Shortcode
     $this->addDefaultAttributes();
 
     add_action('init', $this->addShortcode(...));
-    add_action('ux_builder_setup', $this->uxBuilderSetup(...));
+
+    if ($this->enqueueUxBuilder()) :
+      add_action('ux_builder_setup', $this->uxBuilderSetup(...));
+    endif;
   }
 
   public function setUxBuilderName(string $uxBuilderName): void
@@ -42,12 +45,20 @@ class Shortcode
     });
   }
 
-  private function uxBuilderSetup(): void
+  private function enqueueUxBuilder(): bool
   {
-    if (!function_exists('add_ux_builder_shortcode')) :
-      require_once get_template_directory() . '/inc/builder/helpers.php';
+    $filename = get_template_directory() . '/inc/builder/helpers.php';
+
+    if (!file_exists($filename)) :
+      return false;
     endif;
 
+    require_once $filename;
+    return true;
+  }
+
+  private function uxBuilderSetup(): void
+  {
     add_ux_builder_shortcode('vverner_' . $this->name, [
       'name'              => $this->uxBuilderName ?: $this->name,
       'category'          => 'VVerner',
