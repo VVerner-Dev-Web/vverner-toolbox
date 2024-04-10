@@ -1,27 +1,25 @@
-jQuery(function ($) {
-  $("#vverner-tabs .tab > a").on("click", function (e) {
-    e.preventDefault();
+jQuery("#vverner-tabs .tab > a").on("click", function (e) {
+  e.preventDefault();
 
-    const $btn = $(this);
+  const $btn = jQuery(this);
 
-    $(".tab-content, .tab a").removeClass("active");
+  jQuery(".tab-content, .tab a").removeClass("active");
 
-    $btn.addClass("active");
-    $($btn.attr("href")).addClass("active");
-  });
+  $btn.addClass("active");
+  jQuery($btn.attr("href")).addClass("active");
+});
 
-  $(".vverner-configuration-form").on("submit", function (e) {
-    e.preventDefault();
+jQuery(".vverner-configuration-form").on("submit", function (e) {
+  e.preventDefault();
 
-    const $btn = $(this).find("button");
-    const text = $btn.text();
+  const $btn = jQuery(this).find("button");
+  const text = $btn.text();
 
-    $btn.text("Aguarde...").addClass("disabled");
+  $btn.text("Aguarde...").addClass("disabled");
 
-    $.post("/", $(this).serialize(), function (data) {
-      $btn.text(text).removeClass("disabled");
+  jQuery.post("/", jQuery(this).serialize(), function (data) {
+    $btn.text(text).removeClass("disabled");
 
-      alert(data.message ?? "Configuração salva com sucesso!");
-    });
+    alert(data.message ?? "Configuração salva com sucesso!");
   });
 });

@@ -64,7 +64,7 @@ $parentTheme = $theme->parent();
     </tr>
     <tr>
       <th>Tema pai</th>
-      <td><?= $parentTheme->name . ': ' . $parentTheme->version ?></td>
+      <td><?= $parentTheme ? $parentTheme->name . ': ' . $parentTheme->version : 'Não possui' ?></td>
     </tr>
     <tr>
       <th>Versão do ACF</th>
