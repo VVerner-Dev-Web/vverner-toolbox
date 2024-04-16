@@ -6,164 +6,102 @@ class Schema
 {
   public string $table;
   public array $fields = [];
-  private string $sqlFields;
+
+  private array $sqlFields = [];
+  private array $sqlKeys = [];
 
   public function __construct(string $table)
   {
     $this->table = $table;
   }
 
-  public function createIfNotExists(): bool
+  public function delta(): bool
   {
     global $wpdb;
-
+    require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
     $this->fieldsToSql();
-    $sql = "CREATE TABLE IF NOT EXISTS {$this->table} ({$this->sqlFields})";
-    return $wpdb->query($sql);
+
+    $sql = "CREATE TABLE {$this->table} (" . PHP_EOL;
+
+    $sql .= implode(', ' . PHP_EOL, $this->sqlFields);
+    $sql .= $this->sqlKeys ? ', ' . PHP_EOL . implode(', ' . PHP_EOL, $this->sqlKeys) : '';
+    $sql .= ") COLLATE {$wpdb->collate}";
+
+    dbDelta($sql);
+    return true;
   }
 
   private function fieldsToSql(): void
   {
-    $length = count($this->fields);
+    $this->sqlFields = [];
+    foreach ($this->fields as $key => $field) {
 
-    foreach ($this->fields as $key => $field) :
-      $this->sqlFields .= $key . ' ' . $field['type'];
+      $sqlField = "{$key} {$field['type']}";
 
-      if (array_key_exists('primaryKey', $field)) :
-        $this->sqlFields .= " PRIMARY KEY";
-      endif;
-
-      if (array_key_exists('unique', $field)) :
-        $this->sqlFields .= " UNIQUE";
-      endif;
-
-      if (array_key_exists('unsigned', $field)) :
-        $this->sqlFields .= " UNSIGNED";
-      endif;
-
-      if (!array_key_exists('nullable', $field)) :
-        $this->sqlFields .= " NOT NULL";
-      endif;
-
-      if (array_key_exists('autoIncrement', $field)) :
-        $this->sqlFields .= " AUTO_INCREMENT";
-      endif;
-      if ($length >  1) :
-        $length--;
-        $this->sqlFields .= ', ';
-      endif;
-
-    endforeach;
-    $this->addConstraints();
-  }
-
-  private function addConstraints(): void
-  {
-    foreach ($this->fields as $key => $field) :
-
-      if (!array_key_exists('foreign', $field)) {
-        continue;
+      if (array_key_exists('nullable', $field) && !$field['nullable']) {
+        $sqlField .= " NOT NULL";
       }
 
-      $this->sqlFields .= ", CONSTRAINT FK_{$this->table}_" . $field['foreign']['table'] . " FOREIGN KEY ({$key}) ";
-      $this->sqlFields .= " REFERENCES " . $field['foreign']['table'] . '(' . $field['foreign']['column'] . ')';
+      if (array_key_exists('auto_increment', $field) && $field['auto_increment']) {
+        $sqlField .= " AUTO_INCREMENT";
+      }
 
-    endforeach;
+      $this->sqlFields[] = $sqlField;
+
+      // Check for primary keys
+      if (array_key_exists('primary', $field) && $field['primary']) {
+        $this->sqlKeys[] = "PRIMARY KEY  ({$key})";
+      }
+
+      // Check for unique keys
+      if (array_key_exists('unique', $field) && $field['unique']) {
+        $this->sqlKeys[] = "UNIQUE KEY {$key}_unique ({$key})";
+      }
+
+      // Check for foreign keys
+      if (array_key_exists('foreign', $field)) {
+        $foreign = $field['foreign'];
+        $this->sqlKeys[] = "CONSTRAINT FK_{$this->table}_{$key} FOREIGN KEY ({$key}) REFERENCES {$foreign['table']}({$foreign['column']})";
+      }
+    }
   }
 
   public function addColumn(string $name, string $type): Schema
   {
-    $this->fields[$name] = [
-      'type' => $type
-    ];
-
+    $this->fields[$name] = ['type' => $type];
     return $this;
   }
 
   public function primaryKey(string $name): Schema
   {
-
-    $this->fields[$name]['primaryKey'] = true;
-
+    $this->fields[$name]['primary'] = true;
     return $this;
   }
 
   public function nullable(string $name): Schema
   {
-
     $this->fields[$name]['nullable'] = true;
-
     return $this;
   }
 
   public function unique(string $name): Schema
   {
     $this->fields[$name]['unique'] = true;
-
-    return $this;
-  }
-
-  public function unsigned(string $name): Schema
-  {
-    $this->fields[$name]['unsigned'] = true;
-
     return $this;
   }
 
   public function autoIncrement(string $name): Schema
   {
-    $this->fields[$name]['autoIncrement'] = true;
-
+    $this->fields[$name]['auto_increment'] = true;
     return $this;
   }
 
-  public function foreignKey(string $name, string $referenceTable, string $refereceColumn): Schema
+  public function foreignKey(string $name, string $referenceTable, string $referenceColumn): Schema
   {
     $this->fields[$name]['foreign'] = [
       'table' => $referenceTable,
-      'column' => $refereceColumn
+      'column' => $referenceColumn
     ];
-
-    return $this;
-  }
-
-  public function dropIfExists(): void
-  {
-    global $wpdb;
-
-    $sql = "DROP TABLE IF EXISTS {$this->table}";
-    $wpdb->query($sql);
-  }
-
-  public function alter(string $action): Schema
-  {
-    global $wpdb;
-
-    $this->fieldsToSql();
-    $sql = "ALTER TABLE {$this->table}";
-
-    switch ($action):
-      case 'add':
-        $sql .= " ADD COLUMN {$this->sqlFields}";
-        break;
-
-      case 'drop':
-        $column = array_key_first($this->fields);
-        $sql .= " DROP COLUMN {$column}";
-        break;
-
-      case 'alter':
-        $sql .= " MODIFY COLUMN {$this->sqlFields}";
-        break;
-    endswitch;
-    $wpdb->query($sql);
-
-    return $this;
-  }
-
-  public function resetFields(): Schema
-  {
-    $this->fields = [];
     return $this;
   }
 }
