@@ -6,6 +6,9 @@ defined('ABSPATH') || exit('No direct script access allowed');
 
 class AutoLoader
 {
+  const DS = DIRECTORY_SEPARATOR;
+  const CS = '\\';
+
   public function __construct(private string $namespace, private string $initialPath)
   {
     global $VVerner;
@@ -21,7 +24,7 @@ class AutoLoader
 
   private function loadAdapters(): void
   {
-    $path = VVERNER_TOOLBOX . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'Adapter';
+    $path = VVERNER_TOOLBOX . self::DS . 'src' . self::DS . 'Adapter';
     $this->load($path);
   }
 
@@ -41,15 +44,15 @@ class AutoLoader
     $ignoredFiles = ['index.php', '..', '.'];
     $dependencies = array_diff(scandir($path), $ignoredFiles);
 
-    $files = array_filter($dependencies, fn ($dependency): bool => is_file($path . DIRECTORY_SEPARATOR . $dependency));
+    $files = array_filter($dependencies, fn ($dependency): bool => is_file($path . self::DS . $dependency));
     $dependencies = array_diff($dependencies, $files);
 
     foreach ($files as $file) :
-      $this->loadFile($path . DIRECTORY_SEPARATOR . $file);
+      $this->loadFile($path . self::DS . $file);
     endforeach;
 
     foreach ($dependencies as $dependency) :
-      $this->load($path . DIRECTORY_SEPARATOR . $dependency);
+      $this->load($path . self::DS . $dependency);
     endforeach;
   }
 
@@ -75,22 +78,18 @@ class AutoLoader
   private function normalizeSlashesForDirectorySeparator(string $path): string
   {
     return str_replace(
-      ['/', '\\'],
-      [DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR],
+      ['/', self::CS],
+      [self::DS, self::DS],
       $path
     );
   }
 
   private function getDirectoryNamespace(string $path): string
   {
-    $className = str_replace(
-      [DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR],
-      ["\\", "\\"],
+    return $this->namespace . str_replace(
+      [$this->initialPath, '.php', self::DS],
+      ['', '', self::CS],
       $path
     );
-
-    $className = str_replace($this->initialPath, '', $className);
-    $className = str_replace('.php', '', $className);
-    return $this->namespace . $className;
   }
 }
