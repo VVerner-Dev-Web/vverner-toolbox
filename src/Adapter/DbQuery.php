@@ -70,7 +70,7 @@ abstract class DbQuery
     ];
 
     $sql = "SELECT COUNT(*) FROM " . $this->dbName() . " WHERE {$this->where}";
-    $totalItems = (int) $this->fetch($sql)[0];
+    $totalItems = (int) $this->fetch($sql, false)[0];
 
     $pagination->totalPages = max(1, ceil($totalItems / self::RESULTS_PER_PAGE));
     $pagination->nextPage = $currentPage >= $pagination->totalPages ? null : 1 + $currentPage;
@@ -86,7 +86,7 @@ abstract class DbQuery
     return (object) ['results' => $results, 'pagination' => $pagination];
   }
 
-  private function fetch(string $sql)
+  private function fetch(string $sql, bool $instantiateObject = true)
   {
     global $wpdb;
 
@@ -96,7 +96,7 @@ abstract class DbQuery
 
     $results = $this->fetchingCol() ? $wpdb->get_col($sql) : $wpdb->get_results($sql);
 
-    if ('*' === $this->select && isset($this->cls)) :
+    if ('*' === $this->select && isset($this->cls) & $instantiateObject) :
       foreach ($results as $index => $row) :
         $results[$index] = $this->cls::loadFromDbObject(new $this->cls, $row);
       endforeach;
