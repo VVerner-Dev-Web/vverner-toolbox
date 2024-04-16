@@ -8,7 +8,7 @@ abstract class DbQuery
 {
   public const RESULTS_PER_PAGE = 30;
 
-  protected Entity $cls;
+  protected string $cls;
 
   private string $select = '*';
   private string $from = '';
