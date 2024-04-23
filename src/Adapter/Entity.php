@@ -18,13 +18,20 @@ abstract class Entity
     $this->load($id);
   }
 
-  /**
-   * Must be overridden by subclasses
-   */
-  public static function loadFromDbObject(Entity $cls, stdClass $db): Entity
-  {
-    return $cls;
-  }
+  abstract public static function loadFromDbObject(Entity $cls, stdClass $db): Entity;
+  // {
+  //   return $cls;
+  // }
+
+  abstract protected function db(string $returnType = 'value'): array;
+  // {
+  //   return array_map(fn ($item): mixed => $item[$returnType], [
+  //     'origin'       => [
+  //       'value'   => $this->id,
+  //       'format'  => '%d'
+  //     ]
+  //   ]);
+  // }
 
   public function save(): bool
   {
@@ -59,35 +66,20 @@ abstract class Entity
   {
     global $wpdb;
 
-    $updated = $wpdb->update(
+    return (bool)  $wpdb->update(
       static::$TABLE,
       $this->db('value'),
       ['id' => $this->id],
       $this->db('format'),
       ['%d']
     );
-
-    return (bool) $updated;
-  }
-
-  /**
-   * Must be overridden by subclasses
-   */
-  protected function db(string $returnType = 'value'): array
-  {
-    return array_map(fn ($item): mixed => $item[$returnType], [
-      'origin'       => [
-        'value'   => $this->id,
-        'format'  => '%d'
-      ]
-    ]);
   }
 
   protected function load(int $id): void
   {
     global $wpdb;
 
-    $sql  = "SELECT * FROM " . static::$TABLE . ' WHERE 1 AND id = ' . $id;
+    $sql  = "SELECT * FROM " . static::$TABLE . ' WHERE id = ' . $id;
     $data = $wpdb->get_row($sql);
 
     if ($data) :

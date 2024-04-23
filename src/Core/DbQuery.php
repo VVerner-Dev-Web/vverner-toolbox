@@ -4,21 +4,26 @@ namespace VVerner\Adapter;
 
 use stdClass;
 
-abstract class DbQuery
+class DbQuery
 {
-  public const RESULTS_PER_PAGE = 30;
-
-  protected string $cls;
-
   private string $select = '*';
   private string $from = '';
   private string $where = '1';
-  private string $orderby = 'id';
+  private string $orderby = '';
   private string $order = 'DESC';
+
+  private ?string $objectClass = null;
 
   public function select(string $select): self
   {
     $this->select = $select;
+
+    if (class_exists($select) && is_subclass_of($select, Entity::class)) {
+      $this->from($select::$TABLE);
+      $this->objectClass = $select;
+      $this->select = '*';
+    }
+
     return $this;
   }
 
@@ -48,19 +53,19 @@ abstract class DbQuery
 
   public function fetchAll(): array
   {
-    $sql = "SELECT {$this->select} FROM " . $this->dbName() . " WHERE {$this->where} ORDER BY {$this->orderby} {$this->order}";
-    return  $this->fetch($sql);
+    $sql = "SELECT {$this->select} FROM {$this->from} WHERE {$this->where} {$this->orderQuery()}";
+    return $this->fetch($sql);
   }
 
   public function fetchOne(): mixed
   {
-    $sql     = "SELECT {$this->select} FROM " . $this->dbName() . " WHERE {$this->where} ORDER BY {$this->orderby} {$this->order} LIMIT 1";
+    $sql     = "SELECT {$this->select} FROM {$this->from} WHERE {$this->where} {$this->orderQuery()} LIMIT 1";
     $results = $this->fetch($sql);
 
     return array_shift($results);
   }
 
-  public function fetchPage(int $currentPage): stdClass
+  public function fetchPage(int $currentPage, int $itemsPerPage = 30): stdClass
   {
     $pagination = (object) [
       'currentPage'   => $currentPage,
@@ -69,24 +74,24 @@ abstract class DbQuery
       'previousPage'  => $currentPage > 1 ? $currentPage - 1 : null,
     ];
 
-    $sql = "SELECT COUNT(*) FROM " . $this->dbName() . " WHERE {$this->where}";
-    $totalItems = (int) $this->fetch($sql, false)[0];
+    $sql = "SELECT COUNT(*) as total FROM {$this->from} WHERE {$this->where}";
+    $totalItems = (int) $this->fetch($sql, true)[0]->total;
 
-    $pagination->totalPages = max(1, ceil($totalItems / self::RESULTS_PER_PAGE));
+    $pagination->totalPages = (int) max(1, ceil($totalItems / $itemsPerPage));
     $pagination->nextPage = $currentPage >= $pagination->totalPages ? null : 1 + $currentPage;
 
-    $offset = self::RESULTS_PER_PAGE * ($currentPage - 1);
-    $limit  = "LIMIT $offset," . self::RESULTS_PER_PAGE;
+    $offset = $itemsPerPage * ($currentPage - 1);
+    $limit  = "LIMIT $offset," . $itemsPerPage;
 
-    $sql  = str_replace('COUNT(*)', '*', $sql);
-    $sql .= " ORDER BY {$this->orderby} {$this->order} $limit";
+    $sql  = str_replace('COUNT(*) as total', $this->select, $sql);
+    $sql .= " {$this->orderQuery()} $limit";
 
     $results = $this->fetch($sql);
 
-    return (object) ['results' => $results, 'pagination' => $pagination];
+    return (object) ['pagination' => $pagination, 'results' => $results];
   }
 
-  private function fetch(string $sql, bool $instantiateObject = true)
+  private function fetch(string $sql, bool $counting = false)
   {
     global $wpdb;
 
@@ -96,10 +101,8 @@ abstract class DbQuery
 
     $results = $this->fetchingCol() ? $wpdb->get_col($sql) : $wpdb->get_results($sql);
 
-    if ('*' === $this->select && isset($this->cls) & $instantiateObject) :
-      foreach ($results as $index => $row) :
-        $results[$index] = $this->cls::loadFromDbObject(new $this->cls, $row);
-      endforeach;
+    if ($this->objectClass && !$counting) :
+      $results = array_map(fn ($row) => $this->objectClass::loadFromDbObject(new $this->objectClass, $row), $results);
     endif;
 
     return $results;
@@ -110,17 +113,8 @@ abstract class DbQuery
     return '*' !== $this->select && count(explode(',', $this->select)) === 1;
   }
 
-  private function dbName(): string
+  private function orderQuery(): string
   {
-    global $wpdb;
-    $db = $wpdb->posts;
-
-    if (isset($this->cls)) :
-      $db = $this->cls::$TABLE;
-    elseif (isset($this->from) && $this->from) :
-      $db = $this->from;
-    endif;
-
-    return $db;
+    return $this->orderby ? " ORDER BY {$this->orderby} $this->order" : "";
   }
 }
