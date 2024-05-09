@@ -2,7 +2,9 @@
 
 namespace VVerner\Adapter;
 
+use ReflectionClass;
 use stdClass;
+use VVerner\Core\Schema;
 
 abstract class Entity
 {
@@ -12,26 +14,49 @@ abstract class Entity
 
   public function __construct(int $id = null)
   {
-    if ($id === null || $id === 0) {
-      return;
-    }
-    $this->load($id);
+    if ($id) :
+      $this->load($id);
+    endif;
   }
 
-  abstract public static function loadFromDbObject(Entity $cls, stdClass $db): Entity;
-  // {
-  //   return $cls;
-  // }
+  public static function loadFromDbObject(Entity $cls, stdClass $db): Entity
+  {
+    $props = (new ReflectionClass($cls))->getProperties();
+    $dbFormats = Schema::dbFormats();
 
-  abstract protected function db(string $returnType = 'value'): array;
-  // {
-  //   return array_map(fn ($item): mixed => $item[$returnType], [
-  //     'origin'       => [
-  //       'value'   => $this->id,
-  //       'format'  => '%d'
-  //     ]
-  //   ]);
-  // }
+    foreach ($props as $prop) {
+      if (!$prop->isPublic() || $prop->isStatic()) :
+        continue;
+      endif;
+
+      $key = $prop->getName();
+      $cb  = $dbFormats[$prop->getType()->getName()]['normalizer'];
+
+      $cls->$key = $cb($db->$key);
+    }
+
+    return $cls;
+  }
+
+  private function db(string $returnType = 'value'): array
+  {
+    $props = (new ReflectionClass($this))->getProperties();
+    $db    = [];
+    $dbFormats = Schema::dbFormats();
+
+    foreach ($props as $prop) {
+      if (!$prop->isPublic() || !$prop->isInitialized($this) || $prop->isStatic()) :
+        continue;
+      endif;
+
+      $db[$prop->getName()] = [
+        'value'  => $prop->getValue($this),
+        'format' => $dbFormats[$prop->getType()->getName()]['format']
+      ];
+    }
+
+    return array_map(fn ($item): mixed => $item[$returnType], $db);
+  }
 
   public function save(): bool
   {
@@ -79,11 +104,10 @@ abstract class Entity
   {
     global $wpdb;
 
-    $sql  = "SELECT * FROM " . static::$TABLE . ' WHERE id = ' . $id;
-    $data = $wpdb->get_row($sql);
+    $data = $wpdb->get_row("SELECT * FROM " . static::$TABLE . ' WHERE id = ' . $id);
 
     if ($data) :
-      static::loadFromDbObject($this, $data);
+      self::loadFromDbObject($this, $data);
     endif;
   }
 }
