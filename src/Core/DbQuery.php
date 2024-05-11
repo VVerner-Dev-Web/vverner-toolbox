@@ -1,8 +1,9 @@
 <?php
 
-namespace VVerner\Adapter;
+namespace VVerner\Core;
 
 use stdClass;
+use VVerner\Adapter\Entity;
 
 class DbQuery
 {
