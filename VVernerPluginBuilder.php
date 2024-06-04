@@ -1,6 +1,6 @@
 <?php defined('ABSPATH') || exit;
 
-class VernerPluginBuilder
+class VVernerPluginBuilder
 {
   private function __construct()
   {
@@ -16,6 +16,10 @@ class VernerPluginBuilder
   public static function activation(): void
   {
     self::deletePreviousLoader();
+
+    if (!vvernerToolboxFileSystem()->is_dir(WP_CONTENT_DIR . DIRECTORY_SEPARATOR . 'mu-plugins')) :
+      vvernerToolboxFileSystem()->mkdir(WP_CONTENT_DIR . DIRECTORY_SEPARATOR . 'mu-plugins');
+    endif;
 
     if (!vvernerToolboxFileSystem()->exists(self::filename())) :
       vvernerToolboxFileSystem()->put_contents(self::filename(), self::fileContent());
@@ -44,11 +48,10 @@ class VernerPluginBuilder
     endif;
   }
 
-
   private static function fileContent(): string
   {
     return '<?php ' . PHP_EOL . vvernerToolboxFileSystem()->get_contents(__DIR__ . DIRECTORY_SEPARATOR . 'mu-vverner.txt');
   }
 }
 
-VernerPluginBuilder::build();
+VVernerPluginBuilder::build();

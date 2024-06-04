@@ -6,4 +6,4 @@
  * Version: 1.0.0
  */
 
-require_once WP_CONTENT_DIR . DIRECTORY_SEPARATOR . "plugins" . DIRECTORY_SEPARATOR . "vverner". DIRECTORY_SEPARATOR ."vverner.php";
+require_once WP_CONTENT_DIR . DIRECTORY_SEPARATOR . "plugins" . DIRECTORY_SEPARATOR . "vverner-toolbox". DIRECTORY_SEPARATOR ."vverner-toolbox.php";

@@ -21,15 +21,15 @@ endif;
   <ul class="navigator">
     <?php foreach ($tabs as $index => $tab) : ?>
       <li class="tab">
-        <a class="<?php echo 'welcome' === $index ? 'active' : '' ?>" href="#tab-<?php esc_attr($index) ?>">
-          <?php esc_attr($tab)  ?>
+        <a class="<?php echo 'welcome' === $index ? 'active' : '' ?>" href="#tab-<?php echo esc_attr($index) ?>">
+          <?php echo esc_attr($tab)  ?>
         </a>
       </li>
     <?php endforeach; ?>
   </ul>
   <div class="tabs-container">
     <?php foreach ($tabs as $index => $tab) : ?>
-      <div id="tab-<?php esc_attr($index) ?>" class="tab-content <?php echo 'welcome' === $index ? 'active' : '' ?>">
+      <div id="tab-<?php echo esc_attr($index) ?>" class="tab-content <?php echo 'welcome' === $index ? 'active' : '' ?>">
         <?php require_once __DIR__ . DIRECTORY_SEPARATOR . 'tab/' . $index . '.php' ?>
       </div>
     <?php endforeach; ?>
