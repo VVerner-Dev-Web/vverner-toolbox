@@ -104,3 +104,51 @@
   -webkit-filter: invert(1) brightness(3);
   filter: invert(1) brightness(3);
 }
+
+#vverner-debug-logs {
+  background-color: black;
+  background-image: radial-gradient(rgba(0, 150, 0, 0.75), black 120%);
+  margin: 0;
+  overflow-x: hidden;
+  padding: 1em;
+  color: white;
+  font: 1rem Inconsolata, monospace;
+  text-shadow: 0 0 5px #c8c8c8;
+  border: 0;
+  position: relative;
+  height: 350px;
+  margin-bottom: 20px;
+}
+
+#vverner-debug-logs::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.15),
+    rgba(0, 0, 0, 0.15) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+  pointer-events: none;
+}
+
+#vverner-debug-logs ::-moz-selection {
+  background: #0080ff;
+  text-shadow: none;
+}
+
+#vverner-debug-logs ::selection {
+  background: #0080ff;
+  text-shadow: none;
+}
+
+#debug-timeout {
+  height: 5px;
+  background: #6c2bd0;
+  transition: all 1s linear;
+}

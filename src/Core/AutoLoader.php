@@ -9,6 +9,14 @@ class AutoLoader
   const DS = DIRECTORY_SEPARATOR;
   const CS = '\\';
 
+  private array $excludedFiles = [];
+
+  public function except(array $paths): self
+  {
+    $this->excludedFiles = array_map(fn ($path): string => $this->normalizeSlashesForDirectorySeparator($path), $paths);
+    return $this;
+  }
+
   public function __construct(private string $namespace, private string $initialPath)
   {
     global $VVerner;
@@ -58,7 +66,11 @@ class AutoLoader
 
   private function loadFile(string $path): void
   {
-    if (str_ends_with($path, '.php') && !str_ends_with($path, 'AutoLoader.php')) :
+    if (
+      str_ends_with($path, '.php') &&
+      !str_ends_with($path, 'AutoLoader.php') &&
+      !in_array($path, $this->excludedFiles)
+    ) :
       require_once $path;
       $this->attachClass($path);
     endif;

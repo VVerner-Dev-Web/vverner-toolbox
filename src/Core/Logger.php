@@ -18,7 +18,7 @@ class Logger
 
   public function dump(mixed $thing): void
   {
-    if (isVVernerUser()) :
+    if (current_user_can('manage_options')) :
       add_action('init', function () use ($thing): never {
         echo '<pre>';
         var_dump($thing);

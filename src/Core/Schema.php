@@ -45,7 +45,7 @@ class Schema
       'array'   => [
         'format' => '%s',
         'normalizer' => fn ($value) => json_decode($value, true)
-      ],
+      ]
     ];
   }
 

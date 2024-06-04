@@ -5,6 +5,7 @@ namespace VVerner\API;
 use VVerner\Adapter\Ajax;
 use VVerner\Controllers\Emails;
 use VVerner\Controllers\Images;
+use VVerner\Core\Debug;
 use VVerner\Core\JumpStart;
 
 class Admin extends Ajax
@@ -68,10 +69,6 @@ class Admin extends Ajax
     $this->validateNonce(__METHOD__);
     $this->validateCapability('manage_options');
 
-    if (!isVVernerUser()) :
-      $this->response(['success' => false, 'message' => 'Sem permissão para executar o jumpstart.']);
-    endif;
-
     $jobs = $this->getParam('jobs', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY) ?? [];
 
     $worker = new JumpStart;
@@ -79,5 +76,39 @@ class Admin extends Ajax
     array_map(fn ($job) => $worker->$job(), $jobs);
 
     $this->response(['success' => true, 'message' => 'Jumpstart concluído com sucesso.']);
+  }
+
+  public function debug(): void
+  {
+    $this->validateNonce(__METHOD__);
+    $this->validateCapability('manage_options');
+
+    $worker = new Debug;
+
+    $debugLog = filter_input(INPUT_POST, 'wp_debug_log', FILTER_VALIDATE_BOOL);
+    $debugDisplay = filter_input(INPUT_POST, 'wp_debug_display', FILTER_VALIDATE_BOOL);
+    $debug = $debugLog || $debugDisplay || filter_input(INPUT_POST, 'wp_debug', FILTER_VALIDATE_BOOL);
+
+    $debug ? $worker->setConstAsTrue('wp_debug') : $worker->setConstAsFalse('wp_debug');
+    $debugLog ? $worker->setConstAsTrue('wp_debug_log') : $worker->setConstAsFalse('wp_debug_log');
+    $debugDisplay ? $worker->setConstAsTrue('wp_debug_display') : $worker->setConstAsFalse('wp_debug_display');
+
+    $this->response(['success' => true, 'message' => 'Atualizações feitas com sucesso! Recarrega a página para ver os logs']);
+  }
+
+  public function clearDebug(): void
+  {
+    $this->validateCapability('manage_options');
+
+    (new Debug)->clearLogs();
+
+    $this->response(['success' => true, 'message' => 'Atualizações feitas com sucesso!']);
+  }
+
+  public function getDebugLogs(): void
+  {
+    $this->validateCapability('manage_options');
+
+    $this->response((new Debug)->getCurrentLogContents());
   }
 }

@@ -2,11 +2,12 @@
 $tabs = [
   'welcome' => 'Bem vindo',
   'images'  => 'Imagens',
-  'smtp' => 'E-mails',
-  'system' => 'Sistema',
+  'smtp'    => 'E-mails',
+  'debug'   => 'Debug',
+  'system'  => 'Sistema'
 ];
 
-if (isVVernerUser()) :
+if (current_user_can('manage_options')) :
   $tabs['jumpstart'] = 'Jumpstart';
 endif;
 

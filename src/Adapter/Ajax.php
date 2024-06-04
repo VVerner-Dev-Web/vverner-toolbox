@@ -10,8 +10,6 @@ abstract class Ajax
 
   public static function attach(): void
   {
-    global $VVerner;
-
     $cls = new static;
 
     if (!defined('VJAX_ATTACHED')) :

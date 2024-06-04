@@ -1,11 +1,5 @@
 <?php defined('ABSPATH') || exit;
 
-function isVVernerUser(): bool
-{
-  $data = get_userdata(get_current_user_id());
-  return $data && str_contains((string) $data->user_email, 'vverner');
-}
-
 function vvernerToolboxInDev(): bool
 {
   return 'DEV' === vvernerToolboxEnv();
@@ -14,24 +8,18 @@ function vvernerToolboxInDev(): bool
 function vvernerToolboxEnv(): string
 {
   $url        = home_url();
-  $currentEnv = 'PRD';
-  $knownPaths = [
-    '.dev'          => 'DEV',
-    '-sandbox.com'  => 'DEV',
-    'kinsta.cloud'  => 'DEV'
-  ];
+  $knownPaths = ['.dev', '-sandbox.com', 'kinsta.cloud'];
 
-  foreach ($knownPaths as $path => $env) :
+  foreach ($knownPaths as $path) :
     if (strpos((string) $url, $path)) :
-      $currentEnv = $env;
-      break;
+      return 'DEV';
     endif;
   endforeach;
 
-  return $currentEnv;
+  return 'PRD';
 }
 
 function vvernerToolboxAssetUrl(string $filename): string
 {
-  return WP_CONTENT_URL . '/mu-plugins/vverner/assets/' . $filename;
+  return  plugin_dir_url(VVERNER_TOOLBOX_FILE) . 'assets/' . $filename;
 }

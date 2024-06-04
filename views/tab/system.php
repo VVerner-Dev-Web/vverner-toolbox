@@ -73,7 +73,7 @@ $parentTheme = $theme->parent();
   </tbody>
 </table>
 
-<?php if (isVVernerUser()) : ?>
+<?php if (current_user_can('manage_options')) : ?>
 
   <br>
   <h3>Autoloaders</h3>

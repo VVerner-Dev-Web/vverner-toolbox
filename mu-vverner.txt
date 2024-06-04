@@ -1,11 +1,9 @@
-<?php
-
 /**
- * Plugin name: VVerner - Toolbox
+ * Plugin name: VVerner - Toolbox loader
  * Description: Este plugin é a caixa de ferramentas da equipe VVerner que otimiza e padroniza os projetos entregues pela empresa.
  * Author: VVerner
  * Author URI: https://vverner.com
  * Version: 1.0.0
  */
 
-require_once __DIR__ . DIRECTORY_SEPARATOR . 'vverner' . DIRECTORY_SEPARATOR . 'vverner.php';
+require_once WP_CONTENT_DIR . DIRECTORY_SEPARATOR . "plugins" . DIRECTORY_SEPARATOR . "vverner". DIRECTORY_SEPARATOR ."vverner.php";
