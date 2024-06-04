@@ -68,8 +68,6 @@ class JumpStart
 
   public function pages(): void
   {
-    global $wpdb;
-    $sql = "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key = 'vverner_key' AND meta_value = %s";
     $requiredPages = [
       'home'      => 'Início',
       'contact'   => 'Contato',
@@ -78,10 +76,7 @@ class JumpStart
     ];
 
     foreach ($requiredPages as $key => $page) :
-      $pageQuery  = $wpdb->prepare($sql, $key);
-      $col          = $wpdb->get_col($pageQuery);
-
-      if ($col) :
+      if ($this->getPostIdForKey($key)) :
         continue;
       endif;
 
@@ -125,19 +120,40 @@ class JumpStart
 
   public function configs(): void
   {
-    global $wpdb;
-
     update_option('blogdescription', '');
     update_option('timezone_string', 'America/Sao_Paulo');
     update_option('date_format', 'd/m/Y');
     update_option('time_format', 'H:i');
-
-    $home = "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key = 'vverner_key' AND meta_value = 'home'";
-    $blog = "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key = 'vverner_key' AND meta_value = 'blog'";
-
-    update_option('show_on_front', 'page');
-    update_option('page_on_front', $wpdb->get_var($home));
-    update_option('page_for_posts', $wpdb->get_var($blog));
     update_option('posts_per_page', 12);
+
+    $home = $this->getPostIdForKey('home');
+    $blog = $this->getPostIdForKey('blog');
+
+    if ($home) :
+      update_option('show_on_front', 'page');
+      update_option('page_on_front', $home);
+    endif;
+
+    if ($blog) :
+      update_option('page_for_posts', $blog);
+    endif;
+  }
+
+  private function getPostIdForKey(string $key): int
+  {
+    $posts = get_posts([
+      'posts_per_page' => 1,
+      'fields' => 'ids',
+      'post_type' => 'page',
+      'post_status' => 'publish',
+      'meta_query' => [
+        [
+          'key' => 'vverner_key',
+          'value' => $key
+        ]
+      ]
+    ]);
+
+    return $posts ? array_shift($posts) : 0;
   }
 }

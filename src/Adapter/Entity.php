@@ -104,7 +104,8 @@ abstract class Entity
   {
     global $wpdb;
 
-    $data = $wpdb->get_row("SELECT * FROM " . static::$TABLE . ' WHERE id = ' . $id);
+    $table = static::$TABLE;
+    $data = $wpdb->get_row($wpdb->prepare("SELECT * FROM $table WHERE id = %d", $id));
 
     if ($data) :
       self::loadFromDbObject($this, $data);

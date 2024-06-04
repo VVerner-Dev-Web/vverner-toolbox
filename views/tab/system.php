@@ -1,34 +1,31 @@
+<pre>
 <?php
-global $wp_version, $VVerner;
-
-$db = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
-
-$dbVersion = $db ? mysqli_get_server_info($db) : '';
-$dbVersion = explode(':', $dbVersion)[0];
+global $wp_version, $VVerner, $wpdb;
 
 $theme = wp_get_theme();
 $parentTheme = $theme->parent();
 ?>
 
+</pre>
 
 <h3 style="margin-bottom: 5px">Ambiente</h3>
 <table>
   <tbody>
     <tr>
       <th>Servidor</th>
-      <td><?= filter_input(INPUT_SERVER, 'SERVER_SOFTWARE') ?></td>
+      <td><?php echo esc_html(filter_input(INPUT_SERVER, 'SERVER_SOFTWARE')) ?></td>
     </tr>
     <tr>
       <th>PHP</th>
-      <td><?= phpversion(); ?> (<?= php_sapi_name() ?>)</td>
+      <td><?php echo esc_html(phpversion()); ?> (<?php echo esc_html(php_sapi_name()) ?>)</td>
     </tr>
     <tr>
       <th>Banco de dados</th>
-      <td><?= $dbVersion ? $dbVersion : 'Não reconhecido' ?></td>
+      <td><?php echo esc_html($wpdb->db_server_info()) ?></td>
     </tr>
     <tr>
       <th>Versão do WordPress</th>
-      <td><?= $wp_version ?></td>
+      <td><?php echo esc_html($wp_version) ?></td>
     </tr>
   </tbody>
 </table>
@@ -38,19 +35,19 @@ $parentTheme = $theme->parent();
   <tbody>
     <tr>
       <th>WP_DEBUG</th>
-      <td><?= defined('WP_DEBUG') && WP_DEBUG ? 'Ativo' : 'Inativo' ?></td>
+      <td><?php echo defined('WP_DEBUG') && WP_DEBUG ? 'Ativo' : 'Inativo' ?></td>
     </tr>
     <tr>
       <th>WP_DEBUG_LOG</th>
-      <td><?= defined('WP_DEBUG_LOG') && WP_DEBUG_LOG ? 'Ativo' : 'Inativo' ?></td>
+      <td><?php echo defined('WP_DEBUG_LOG') && WP_DEBUG_LOG ? 'Ativo' : 'Inativo' ?></td>
     </tr>
     <tr>
       <th>WP_DEBUG_DISPLAY</th>
-      <td><?= defined('WP_DEBUG_DISPLAY') && WP_DEBUG_DISPLAY ? 'Ativo' : 'Inativo' ?></td>
+      <td><?php echo defined('WP_DEBUG_DISPLAY') && WP_DEBUG_DISPLAY ? 'Ativo' : 'Inativo' ?></td>
     </tr>
     <tr>
       <th>WP_CRON</th>
-      <td><?= defined('DISABLE_WP_CRON') && DISABLE_WP_CRON ? 'Inativo' : 'Ativo' ?></td>
+      <td><?php echo defined('DISABLE_WP_CRON') && DISABLE_WP_CRON ? 'Inativo' : 'Ativo' ?></td>
     </tr>
   </tbody>
 </table>
@@ -60,15 +57,15 @@ $parentTheme = $theme->parent();
   <tbody>
     <tr>
       <th>Tema atual</th>
-      <td><?= $theme->name . ': ' . $theme->version ?></td>
+      <td><?php echo esc_html($theme->name) . ': ' . esc_html($theme->version) ?></td>
     </tr>
     <tr>
       <th>Tema pai</th>
-      <td><?= $parentTheme ? $parentTheme->name . ': ' . $parentTheme->version : 'Não possui' ?></td>
+      <td><?php echo $parentTheme ? esc_html($parentTheme->name) . ': ' . esc_html($parentTheme->version) : esc_html_e('Não possui', 'vverner') ?></td>
     </tr>
     <tr>
       <th>Versão do ACF</th>
-      <td><?= defined('ACF_VERSION') ? ACF_VERSION : 'Não instalado' ?></td>
+      <td><?php echo defined('ACF_VERSION') ? esc_html(ACF_VERSION) : esc_html_e('Não possui', 'vverner') ?></td>
     </tr>
   </tbody>
 </table>
@@ -89,9 +86,9 @@ $parentTheme = $theme->parent();
       <?php foreach ($VVerner['autoloader'] as $namespace => $source) : ?>
         <tr>
           <td>
-            <strong><?= $namespace ?></strong>
+            <strong><?php echo esc_html($namespace) ?></strong>
           </td>
-          <td><?= $source ?></td>
+          <td><?php echo esc_html($source) ?></td>
         </tr>
       <?php endforeach; ?>
     </tbody>
@@ -111,9 +108,9 @@ $parentTheme = $theme->parent();
       <?php foreach ($VVerner['vjax'] as $endpoint => $callback) : ?>
         <tr>
           <td>
-            <?= home_url('/?vjax=' . $endpoint) ?>
+            <?php echo esc_url(home_url('/?vjax=' . $endpoint)) ?>
           </td>
-          <td><?= $callback ?></td>
+          <td><?php echo esc_html($callback) ?></td>
         </tr>
       <?php endforeach; ?>
     </tbody>

@@ -49,7 +49,7 @@ class Admin
     $view = str_replace('vverner-', '', $view);
     $filename = VVERNER_TOOLBOX . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . $view . '.php';
 
-    if (file_exists($filename)) :
+    if (vvernerToolboxFileSystem()->exists($filename)) :
       echo '<div class="wrap vverner-page">';
       require $filename;
       echo '</div>';

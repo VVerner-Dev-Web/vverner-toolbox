@@ -38,8 +38,8 @@ class Debug
   {
     $limitSize = 500000;
     $filename  = $this->getConst('WP_DEBUG_LOG') && is_readable($this->getConst('WP_DEBUG_LOG')) ? $this->getConst('WP_DEBUG_LOG') : WP_CONTENT_DIR . DIRECTORY_SEPARATOR . 'debug.log';
-    $validSize = file_exists($filename) && filesize($filename) < $limitSize;
-    $content   = $validSize ? file_get_contents($filename) : 'Conteúdo indisponível ou muito grande para ser carregado no navegador.';
+    $validSize = vvernerToolboxFileSystem()->exists($filename) && filesize($filename) < $limitSize;
+    $content   = $validSize ? vvernerToolboxFileSystem()->get_contents($filename) : 'Conteúdo indisponível ou muito grande para ser carregado no navegador.';
 
     return $content;
   }
@@ -47,8 +47,8 @@ class Debug
   public function clearLogs(): void
   {
     $filename  = $this->getConst('WP_DEBUG_LOG') && is_readable($this->getConst('WP_DEBUG_LOG')) ? $this->getConst('WP_DEBUG_LOG') : WP_CONTENT_DIR . DIRECTORY_SEPARATOR . 'debug.log';
-    if (file_exists($filename)) :
-      file_put_contents($filename, '');
+    if (vvernerToolboxFileSystem()->exists($filename)) :
+      vvernerToolboxFileSystem()->put_contents($filename, '');
     endif;
   }
 
@@ -73,7 +73,7 @@ class Debug
   private function getWpConfigContent(): string
   {
     $filename = ABSPATH . 'wp-config.php';
-    return is_writable($filename) ? file_get_contents($filename) : '';
+    return vvernerToolboxFileSystem()->is_writable($filename) ? vvernerToolboxFileSystem()->get_contents($filename) : '';
   }
 
   private function setWpConfigContent(string $content): bool
@@ -81,8 +81,8 @@ class Debug
     $done = false;
     $filename = ABSPATH . 'wp-config.php';
 
-    if (is_writable($filename)) :
-      $done = file_put_contents($filename, $content);
+    if (vvernerToolboxFileSystem()->is_writable($filename)) :
+      $done = vvernerToolboxFileSystem()->put_contents($filename, $content);
     endif;
 
     return (bool) $done;

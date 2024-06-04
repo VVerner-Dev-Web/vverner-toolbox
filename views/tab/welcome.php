@@ -11,12 +11,12 @@
 <p>Se você tiver qualquer dúvida ou dificuldade com o seu site em WordPress ou alguma das funcionalidades desenvolvidas pela nossa equipe, contate-nos através de:</p>
 <ul>
   <li>
-    <strong>Email:</strong> <a href="mailto:<?= $VVerner['support']['email']  ?>"><?= $VVerner['support']['email'] ?></a>
+    <strong>Email:</strong> <a href="mailto:<?php echo esc_html($VVerner['support']['email'])  ?>"><?php echo esc_html($VVerner['support']['email']) ?></a>
   </li>
   <li>
-    <strong>WhatsApp:</strong> <a href="https://wa.me/55<?= preg_replace('/[^0-9]/', '', $VVerner['support']['whatsapp']) ?>?text=Oi! Preciso de ajuda com o site <?= home_url() ?>" target="_blank"><?= $VVerner['support']['whatsapp'] ?></a>
+    <strong>WhatsApp:</strong> <a href="https://wa.me/55<?php echo esc_html(preg_replace('/[^0-9]/', '', $VVerner['support']['whatsapp'])) ?>?text=Oi! Preciso de ajuda com o site <?php echo esc_url(home_url()) ?>" target="_blank"><?php echo esc_html($VVerner['support']['whatsapp']) ?></a>
   </li>
   <li>
-    <a href="<?= $VVerner['support']['site'] ?>" target="_blank">Nosso site</a>
+    <a href="<?php echo esc_html($VVerner['support']['site']) ?>" target="_blank">Nosso site</a>
   </li>
 </ul>

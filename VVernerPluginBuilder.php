@@ -17,8 +17,8 @@ class VernerPluginBuilder
   {
     self::deletePreviousLoader();
 
-    if (!file_exists(self::filename())) :
-      file_put_contents(self::filename(), self::fileContent());
+    if (!vvernerToolboxFileSystem()->exists(self::filename())) :
+      vvernerToolboxFileSystem()->put_contents(self::filename(), self::fileContent());
     endif;
   }
 
@@ -39,7 +39,7 @@ class VernerPluginBuilder
 
   private static function deletePreviousLoader(): void
   {
-    if (file_exists(self::filename())) :
+    if (vvernerToolboxFileSystem()->exists(self::filename())) :
       wp_delete_file(self::filename());
     endif;
   }
@@ -47,7 +47,7 @@ class VernerPluginBuilder
 
   private static function fileContent(): string
   {
-    return '<?php ' . PHP_EOL . file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . 'mu-vverner.txt');
+    return '<?php ' . PHP_EOL . vvernerToolboxFileSystem()->get_contents(__DIR__ . DIRECTORY_SEPARATOR . 'mu-vverner.txt');
   }
 }
 

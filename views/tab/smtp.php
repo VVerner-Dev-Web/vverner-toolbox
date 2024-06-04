@@ -32,24 +32,24 @@ $controller = new Emails;
 
   <div class="input-container">
     <label for="emailFromName">Nome do remetente</label>
-    <input type="text" name="fromName" id="emailFromName" value="<?= $controller->fromName ?>">
+    <input type="text" name="fromName" id="emailFromName" value="<?php echo esc_attr($controller->fromName) ?>">
   </div>
 
   <div class="input-container">
     <label for="emailFromEmail">E-mail do remetente</label>
-    <input type="email" name="fromEmail" id="emailFromEmail" value="<?= $controller->fromEmail ?>">
+    <input type="email" name="fromEmail" id="emailFromEmail" value="<?php echo esc_attr($controller->fromEmail) ?>">
   </div>
 
   <h3>SMTP</h3>
 
   <div class="input-container">
     <label for="emailHost">Servidor SMTP</label>
-    <input type="text" name="host" id="emailHost" value="<?= $controller->host ?>">
+    <input type="text" name="host" id="emailHost" value="<?php echo esc_attr($controller->host) ?>">
   </div>
 
   <div class="input-container">
     <label for="emailPort">Porta SMTP</label>
-    <input type="number" name="port" id="emailPort" value="<?= $controller->port ?>" min="0" step="1">
+    <input type="number" name="port" id="emailPort" value="<?php echo esc_attr($controller->port) ?>" min="0" step="1">
   </div>
 
   <div class="input-container">
@@ -63,12 +63,12 @@ $controller = new Emails;
 
   <div class="input-container">
     <label for="emailUser">Usuário</label>
-    <input type="email" name="user" id="emailUser" value="<?= $controller->user ?>">
+    <input type="email" name="user" id="emailUser" value="<?php echo esc_attr($controller->user) ?>">
   </div>
 
   <div class="input-container">
     <label for="emailPassword">Senha</label>
-    <input type="password" name="password" id="emailPassword" value="<?= $controller->password ?>">
+    <input type="password" name="password" id="emailPassword" value="<?php echo esc_attr($controller->password) ?>">
   </div>
 
   <button type="submit">Salvar</button>

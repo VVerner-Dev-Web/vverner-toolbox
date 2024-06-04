@@ -48,7 +48,7 @@ $debug = new Debug();
   <h3>Log de erros atual</h3>
 
   <div id="debug-timeout"></div>
-  <pre id="vverner-debug-logs"><?= $debug->getCurrentLogContents() ?></pre>
+  <pre id="vverner-debug-logs"><?php esc_html($debug->getCurrentLogContents()) ?></pre>
 
   <a id="clear-logs" style="color: red">Limpar arquivo</a>
 <?php endif; ?>

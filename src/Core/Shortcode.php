@@ -35,8 +35,8 @@ class Shortcode
 
       $args = shortcode_atts($this->atts, $args);
 
-      if (!file_exists($this->view)) :
-        file_put_contents($this->view, 'auto generated');
+      if (!vvernerToolboxFileSystem()->exists($this->view)) :
+        vvernerToolboxFileSystem()->put_contents($this->view, 'auto generated');
       endif;
 
       require_once $this->view;
@@ -49,7 +49,7 @@ class Shortcode
   {
     $filename = get_template_directory() . '/inc/builder/helpers.php';
 
-    if (!file_exists($filename)) :
+    if (!vvernerToolboxFileSystem()->exists($filename)) :
       return false;
     endif;
 

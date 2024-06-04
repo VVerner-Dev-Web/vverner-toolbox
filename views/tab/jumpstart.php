@@ -11,10 +11,10 @@ use VVerner\Core\JumpStart;
 
   <?php foreach (JumpStart::availableJobs() as $index => $job) : ?>
     <div style="margin-bottom: 5px">
-      <label for="jumpstart-<?= $index ?>">
-        <input type="checkbox" name="jobs[]" id="jumpstart-<?= $index ?>" value="<?= $index ?>">
+      <label for="jumpstart-<?php echo esc_attr($index) ?>">
+        <input type="checkbox" name="jobs[]" id="jumpstart-<?php echo esc_attr($index) ?>" value="<?php echo esc_attr($index) ?>">
         <span>
-          <?= $job ?>
+          <?php echo esc_attr($job) ?>
         </span>
       </label>
     </div>
