@@ -11,6 +11,7 @@
  * Version: 1.0.0
  */
 
+use VVerner\Core\AutoEnqueue;
 use VVerner\Core\AutoLoader;
 
 if (!defined('VVERNER_TOOLBOX_FILE')) :
@@ -34,4 +35,5 @@ if (!defined('VVERNER_TOOLBOX_FILE')) :
   require_once VVERNER_TOOLBOX . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'Core' . DIRECTORY_SEPARATOR . 'AutoLoader.php';
 
   (new AutoLoader('VVerner', VVERNER_TOOLBOX . DIRECTORY_SEPARATOR . 'src'))->load();
+  (new AutoEnqueue('vv-toolbox', get_pl() . 'assets'))->load();
 endif;
