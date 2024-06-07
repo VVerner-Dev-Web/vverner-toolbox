@@ -4,12 +4,11 @@ namespace VVerner\Adapter;
 
 use ReflectionClass;
 use stdClass;
-use VVerner\Core\Schema;
+use VVerner\Core\EntityAttributeNormalizer;
 
 abstract class Entity
 {
   public static string $TABLE;
-
   public int $id;
 
   public function __construct(int $id = null)
@@ -22,7 +21,6 @@ abstract class Entity
   public static function loadFromDbObject(Entity $cls, stdClass $db): Entity
   {
     $props = (new ReflectionClass($cls))->getProperties();
-    $dbFormats = Schema::dbFormats();
 
     foreach ($props as $prop) {
       if (!$prop->isPublic() || $prop->isStatic()) :
@@ -30,9 +28,10 @@ abstract class Entity
       endif;
 
       $key = $prop->getName();
-      $cb  = $dbFormats[$prop->getType()->getName()]['normalizer'];
 
-      $cls->$key = $cb($db->$key);
+      $attributeNormalizer = new EntityAttributeNormalizer($prop->getType()->getName(), $db->$key);
+
+      $cls->$key = $attributeNormalizer->load();
     }
 
     return $cls;
@@ -42,16 +41,16 @@ abstract class Entity
   {
     $props = (new ReflectionClass($this))->getProperties();
     $db    = [];
-    $dbFormats = Schema::dbFormats();
 
     foreach ($props as $prop) {
       if (!$prop->isPublic() || !$prop->isInitialized($this) || $prop->isStatic()) :
         continue;
       endif;
 
+      $attributeNormalizer = new EntityAttributeNormalizer($prop->getType()->getName(), $prop->getValue($this));
       $db[$prop->getName()] = [
-        'value'  => $prop->getValue($this),
-        'format' => $dbFormats[$prop->getType()->getName()]['format']
+        'value'  =>  $attributeNormalizer->save(),
+        'format' =>  $attributeNormalizer->format()
       ];
     }
 

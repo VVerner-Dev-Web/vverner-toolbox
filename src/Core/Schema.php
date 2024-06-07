@@ -15,40 +15,6 @@ class Schema
     $this->table = $table;
   }
 
-  public static function dbFormats(): array
-  {
-    return [
-      'bool'   => [
-        'format' => '%d',
-        'normalizer' => fn ($value) => $value ? 1 : 0
-      ],
-      'null'   => [
-        'format' => '%d',
-        'normalizer' => fn ($value) => $value ? 1 : 0
-      ],
-      'int'    => [
-        'format' => '%d',
-        'normalizer' => fn ($value) => (int) $value
-      ],
-      'float'  => [
-        'format' => '%f',
-        'normalizer' => fn ($value) => (float) $value
-      ],
-      'double' => [
-        'format' => '%f',
-        'normalizer' => fn ($value) => (float) $value
-      ],
-      'string' => [
-        'format' => '%s',
-        'normalizer' => fn ($value) => (string) $value
-      ],
-      'array'   => [
-        'format' => '%s',
-        'normalizer' => fn ($value) => json_decode($value, true)
-      ]
-    ];
-  }
-
   public function delta(): bool
   {
     global $wpdb;
