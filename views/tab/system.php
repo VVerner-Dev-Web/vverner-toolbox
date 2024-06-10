@@ -116,4 +116,32 @@ $parentTheme = $theme->parent();
     </tbody>
   </table>
 
+  <br>
+  <h3>Hooks utilizados</h3>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Tipo</th>
+        <th>Hook</th>
+        <th>Callback</th>
+      </tr>
+    </thead>
+    <tbody>
+      <?php foreach ($VVerner['hooks'] as $hook) : ?>
+        <tr>
+          <td>
+            <?php echo esc_html($hook['type']) ?>
+          </td>
+          <td>
+            <?php echo esc_html($hook['hook']) ?>
+          </td>
+          <td>
+            <?php echo esc_html($hook['source']) ?>
+          </td>
+        </tr>
+      <?php endforeach; ?>
+    </tbody>
+  </table>
+
 <?php endif; ?>
