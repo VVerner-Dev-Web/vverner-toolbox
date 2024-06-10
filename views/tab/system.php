@@ -9,51 +9,67 @@ $parentTheme = $theme->parent();
 </pre>
 
 <h3 style="margin-bottom: 5px">Ambiente</h3>
-<table>
+<table class="striped widefat">
   <tbody>
     <tr>
-      <th>Servidor</th>
+      <th>
+        <strong>Servidor</strong>
+      </th>
       <td><?php echo esc_html(filter_input(INPUT_SERVER, 'SERVER_SOFTWARE')) ?></td>
     </tr>
     <tr>
-      <th>PHP</th>
+      <th>
+        <strong>PHP</strong>
+      </th>
       <td><?php echo esc_html(phpversion()); ?> (<?php echo esc_html(php_sapi_name()) ?>)</td>
     </tr>
     <tr>
-      <th>Banco de dados</th>
+      <th>
+        <strong>Banco de dados</strong>
+      </th>
       <td><?php echo esc_html($wpdb->db_server_info()) ?></td>
     </tr>
     <tr>
-      <th>Versão do WordPress</th>
+      <th>
+        <strong>Versão do WordPress</strong>
+      </th>
       <td><?php echo esc_html($wp_version) ?></td>
     </tr>
   </tbody>
 </table>
 
 <h3 style="margin-bottom: 5px">Constantes</h3>
-<table>
+<table class="striped widefat">
   <tbody>
     <tr>
-      <th>WP_DEBUG</th>
+      <th>
+        <strong>WP_DEBUG</strong>
+      </th>
       <td><?php echo defined('WP_DEBUG') && WP_DEBUG ? 'Ativo' : 'Inativo' ?></td>
     </tr>
     <tr>
-      <th>WP_DEBUG_LOG</th>
+      <th>
+        <strong>WP_DEBUG_LOG</strong>
+      </th>
       <td><?php echo defined('WP_DEBUG_LOG') && WP_DEBUG_LOG ? 'Ativo' : 'Inativo' ?></td>
     </tr>
     <tr>
-      <th>WP_DEBUG_DISPLAY</th>
+      <th>
+        <strong>WP_DEBUG_DISPLAY</strong>
+      </th>
       <td><?php echo defined('WP_DEBUG_DISPLAY') && WP_DEBUG_DISPLAY ? 'Ativo' : 'Inativo' ?></td>
     </tr>
     <tr>
-      <th>WP_CRON</th>
+      <th>
+        <strong>WP_CRON</strong>
+      </th>
       <td><?php echo defined('DISABLE_WP_CRON') && DISABLE_WP_CRON ? 'Inativo' : 'Ativo' ?></td>
     </tr>
   </tbody>
 </table>
 
 <h3 style="margin-bottom: 5px">Dependências</h3>
-<table>
+<table class="striped widefat">
   <tbody>
     <tr>
       <th>Tema atual</th>
@@ -75,7 +91,7 @@ $parentTheme = $theme->parent();
   <br>
   <h3>Autoloaders</h3>
 
-  <table>
+  <table class="striped widefat">
     <thead>
       <tr>
         <th>Namespace</th>
@@ -97,7 +113,7 @@ $parentTheme = $theme->parent();
   <br>
   <h3>VJAX - Endpoints</h3>
 
-  <table>
+  <table class="striped widefat">
     <thead>
       <tr>
         <th>Endpoint</th>
@@ -119,7 +135,7 @@ $parentTheme = $theme->parent();
   <br>
   <h3>Hooks utilizados</h3>
 
-  <table>
+  <table class="striped widefat">
     <thead>
       <tr>
         <th>Tipo</th>
