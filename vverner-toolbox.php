@@ -28,6 +28,7 @@ if (!defined('VVERNER_TOOLBOX_FILE')) :
     ],
     'autoloader'  => [],
     'vjax'        => [],
+    'hooks'       => []
   ];
 
   require_once VVERNER_TOOLBOX .  DIRECTORY_SEPARATOR . 'VVernerPluginBuilder.php';
