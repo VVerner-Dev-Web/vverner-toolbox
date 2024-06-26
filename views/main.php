@@ -11,6 +11,10 @@ if (current_user_can('manage_options')) :
   $tabs['jumpstart'] = 'Jumpstart';
 endif;
 
+if (current_user_can('install_plugins')) :
+  $tabs['plugins'] = 'Plugins';
+endif;
+
 ?>
 
 <h1 id="vverner-logo">

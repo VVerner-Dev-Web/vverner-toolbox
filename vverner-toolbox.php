@@ -5,10 +5,10 @@
  * Description: Este plugin é a caixa de ferramentas da equipe VVerner que otimiza e padroniza os projetos entregues pela empresa.
  * Author: VVerner
  * Author URI: https://vverner.com
- * Tested up to: 6.5.3
+ * Tested up to: 6.5.5
  * Requires PHP: 8.0
  * Requires at least: 6.4
- * Version: 1.0.0
+ * Version: 1.1.0
  */
 
 use VVerner\Core\AutoLoader;

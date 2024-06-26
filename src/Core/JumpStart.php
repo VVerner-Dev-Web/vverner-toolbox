@@ -18,7 +18,6 @@ class JumpStart
       'posts' => 'Criar posts demonstrativos no blog',
       'pages' => 'Criar páginas padrões (Início, Contato, Sobre, Notícias)',
       'comments' => 'Apagar comentários padrões',
-      'plugins' => 'Instalar plugins recomendados',
       'configs' => 'Configurar opções iniciais'
     ];
   }
@@ -98,24 +97,6 @@ class JumpStart
       $wpdb->comments,
       ['comment_post_ID' => '1']
     );
-  }
-
-  public function plugins(): void
-  {
-    $plugins = [
-      'contact-form-7',
-      'contact-form-cfdb7',
-      'akismet',
-      'cookie-law-info'
-    ];
-
-    foreach ($plugins as $plugin) :
-      $request = new WP_REST_Request('POST', '/wp/v2/plugins');
-      $request->set_param('slug', $plugin);
-      $request->set_param('status', 'active');
-
-      rest_do_request($request);
-    endforeach;
   }
 
   public function configs(): void

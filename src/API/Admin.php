@@ -7,6 +7,7 @@ use VVerner\Controllers\Emails;
 use VVerner\Controllers\Images;
 use VVerner\Core\Debug;
 use VVerner\Core\JumpStart;
+use VVerner\Core\Plugins;
 
 class Admin extends Ajax
 {
@@ -76,6 +77,18 @@ class Admin extends Ajax
     array_map(fn ($job) => $worker->$job(), $jobs);
 
     $this->response(['success' => true, 'message' => 'Jumpstart concluído com sucesso.']);
+  }
+
+  public function plugins(): void
+  {
+    $this->validateNonce(__METHOD__);
+    $this->validateCapability('install_plugins');
+
+    $plugins = $this->getParam('plugins', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY) ?? [];
+
+    array_map([Plugins::class, 'install'], $plugins);
+
+    $this->response(['success' => true, 'message' => 'Plugins instalados e ativados com sucesso.']);
   }
 
   public function debug(): void

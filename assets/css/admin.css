@@ -77,6 +77,10 @@
   margin-top: 0;
 }
 
+.vverner-configuration-form label {
+  cursor: pointer;
+}
+
 .vverner-page .vverner-configuration-form button {
   background: #6c2bd0;
   color: #fff;
