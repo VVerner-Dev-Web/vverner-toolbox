@@ -2,6 +2,8 @@
 
 namespace VVerner\Controllers;
 
+defined('ABSPATH') || exit;
+
 use VVerner\Adapter\Configuration;
 
 class Images extends Configuration

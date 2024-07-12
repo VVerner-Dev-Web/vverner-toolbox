@@ -5,6 +5,8 @@ namespace VVerner\Core;
 use stdClass;
 use VVerner\Adapter\Entity;
 
+defined('ABSPATH') || exit;
+
 class DbQuery
 {
   private string $select = '*';

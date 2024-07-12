@@ -1,3 +1,5 @@
+<?php defined('ABSPATH') || exit; ?>
+
 <?php global $VVerner; ?>
 <h3>Bem-vindo de volta ao seu espaço online!</h3>
 

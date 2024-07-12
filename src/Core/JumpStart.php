@@ -2,8 +2,6 @@
 
 namespace VVerner\Core;
 
-use WP_REST_Request;
-
 defined('ABSPATH') || exit('No direct script access allowed');
 
 class JumpStart

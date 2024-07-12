@@ -9,6 +9,8 @@ use VVerner\Core\Debug;
 use VVerner\Core\JumpStart;
 use VVerner\Core\Plugins;
 
+defined('ABSPATH') || exit;
+
 class Admin extends Ajax
 {
   public function imageSettings(): void

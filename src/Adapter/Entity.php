@@ -2,6 +2,8 @@
 
 namespace VVerner\Adapter;
 
+defined('ABSPATH') || exit;
+
 use ReflectionClass;
 use stdClass;
 use VVerner\Core\EntityAttributeNormalizer;

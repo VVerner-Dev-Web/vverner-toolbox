@@ -2,6 +2,8 @@
 
 namespace VVerner\Core;
 
+defined('ABSPATH') || exit;
+
 class Debug
 {
   public function __construct()

@@ -1,4 +1,5 @@
-<?php
+<?php defined('ABSPATH') || exit;
+
 $tabs = [
   'welcome' => 'Bem vindo',
   'images'  => 'Imagens',

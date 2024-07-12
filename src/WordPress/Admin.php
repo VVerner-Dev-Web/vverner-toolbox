@@ -2,6 +2,8 @@
 
 namespace VVerner\WordPress;
 
+defined('ABSPATH') || exit;
+
 class Admin
 {
   private function __construct()

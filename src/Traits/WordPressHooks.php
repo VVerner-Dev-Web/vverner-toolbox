@@ -2,6 +2,8 @@
 
 namespace VVerner\Traits;
 
+defined('ABSPATH') || exit;
+
 use ReflectionFunction;
 
 trait WordPressHooks

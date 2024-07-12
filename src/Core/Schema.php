@@ -2,6 +2,8 @@
 
 namespace VVerner\Core;
 
+defined('ABSPATH') || exit;
+
 class Schema
 {
   public string $table;

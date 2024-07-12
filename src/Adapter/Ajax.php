@@ -2,6 +2,8 @@
 
 namespace VVerner\Adapter;
 
+defined('ABSPATH') || exit;
+
 abstract class Ajax
 {
   protected function __construct()

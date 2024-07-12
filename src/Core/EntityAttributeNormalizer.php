@@ -2,6 +2,7 @@
 
 namespace VVerner\Core;
 
+defined('ABSPATH') || exit;
 
 class EntityAttributeNormalizer
 {

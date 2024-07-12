@@ -1,12 +1,10 @@
-<pre>
-<?php
+<?php defined('ABSPATH') || exit;
+
 global $wp_version, $VVerner, $wpdb;
 
 $theme = wp_get_theme();
 $parentTheme = $theme->parent();
 ?>
-
-</pre>
 
 <h3 style="margin-bottom: 5px">Ambiente</h3>
 <table class="striped widefat">
