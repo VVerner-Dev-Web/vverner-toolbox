@@ -14,8 +14,8 @@ abstract class Ajax
   {
     $cls = new static;
 
-    if (!defined('VJAX_ATTACHED')) :
-      define('VJAX_ATTACHED', true);
+    if (!defined('VVERNER_AJAX_ATTACHED')) :
+      define('VVERNER_AJAX_ATTACHED', true);
 
       add_action('parse_request', function (): void {
         if (isset($_REQUEST['vjax']) && $_REQUEST['vjax']) :
