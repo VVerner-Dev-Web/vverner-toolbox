@@ -5,7 +5,7 @@ Requires at least: 6.4
 Tested up to: 6.5.3
 Requires PHP: 8.0
 Stable tag: 1.0.0
-License: GPL v3
+License: GPL v3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
 Este plugin é a caixa de ferramentas da equipe VVerner que otimiza e padroniza os projetos entregues pela empresa.

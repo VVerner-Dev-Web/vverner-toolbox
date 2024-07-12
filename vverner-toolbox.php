@@ -9,6 +9,8 @@
  * Requires PHP: 8.0
  * Requires at least: 6.4
  * Version: 1.1.0
+ * License: GPL v3 or later
+ * License URI: https://www.gnu.org/licenses/gpl-3.0.html
  */
 
 use VVerner\Core\AutoLoader;
