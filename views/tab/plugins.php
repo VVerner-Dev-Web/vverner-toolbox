@@ -14,7 +14,7 @@ use VVerner\Core\Plugins;
       <label for="plugins-<?php echo esc_attr($slug) ?>">
         <input type="checkbox" name="plugins[]" id="plugins-<?php echo esc_attr($slug) ?>" value="<?php echo esc_attr($slug) ?>">
         <span>
-          <strong><?php echo esc_attr($name) ?></strong> &dash; <?= is_dir(WP_CONTENT_DIR . '/plugins/' . $slug) ? 'Instalado' : 'Não instalado' ?>
+          <strong><?php echo esc_attr($name) ?></strong> &dash; <?php echo is_dir(WP_CONTENT_DIR . '/plugins/' . $slug) ? 'Instalado' : 'Não instalado' ?>
         </span>
       </label>
     </div>

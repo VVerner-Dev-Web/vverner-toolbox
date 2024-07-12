@@ -49,7 +49,7 @@ class EntityAttributeNormalizer
       ],
       'array'   => [
         'format' => '%s',
-        'save'  => fn ($value) => json_encode($value, true),
+        'save'  => fn ($value) => wp_json_encode($value, true),
         'load' => fn ($value) => json_decode($value, true)
       ],
       'Enum'   => [

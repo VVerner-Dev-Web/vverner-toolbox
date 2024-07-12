@@ -2,9 +2,9 @@
 Contributors: vverner
 Tags: vverner, tool, manage-multiple-sites, debug, smtp
 Requires at least: 6.4
-Tested up to: 6.5.3
+Tested up to: 6.5.5
 Requires PHP: 8.0
-Stable tag: 1.0.0
+Stable tag: 1.1.0
 License: GPL v3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 

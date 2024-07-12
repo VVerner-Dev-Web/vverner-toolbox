@@ -90,11 +90,7 @@ class JumpStart
 
   public function comments(): void
   {
-    global $wpdb;
-    $wpdb->delete(
-      $wpdb->comments,
-      ['comment_post_ID' => '1']
-    );
+    wp_delete_comment(1);
   }
 
   public function configs(): void

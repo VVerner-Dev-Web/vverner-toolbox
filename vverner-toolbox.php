@@ -20,7 +20,7 @@ if (!defined('VVERNER_TOOLBOX_FILE')) :
 
   define('VVERNER_TOOLBOX', __DIR__);
   define('VVERNER_TOOLBOX_FILE', __FILE__);
-  define('VVERNER_TOOLBOX_VERSION', '1.0.0');
+  define('VVERNER_TOOLBOX_VERSION', '1.1.0');
 
   $VVerner = [
     'support' => [
